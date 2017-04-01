@@ -107,7 +107,7 @@ def _parsing_dayprice_json(pageNum=1):
         DataFrame 当日所有股票交易数据(DataFrame)
     """
 #     ct._write_console()
-    request = Request(ct.SINA_DAY_PRICE_URL%(ct.P_TYPE['http'], ct.DOMAINS['vsf'],
+    request = Request(ct.SINA_DAY_PRICE_URL%(ct.P_TYPE['https'], ct.DOMAINS['vsf'],
                                  ct.PAGES['jv']))
     text = urlopen(request, timeout=10).read()
     if text == 'null':
@@ -152,7 +152,7 @@ def get_tick_data(code=None, date=None, retry_count=3, pause=0.001):
     for _ in range(retry_count):
         time.sleep(pause)
         try:
-            re = Request(ct.TICK_PRICE_URL % (ct.P_TYPE['http'], ct.DOMAINS['sf'], ct.PAGES['dl'],
+            re = Request(ct.TICK_PRICE_URL % (ct.P_TYPE['https'], ct.DOMAINS['sf'], ct.PAGES['dl'],
                                 date, symbol))
             lines = urlopen(re, timeout=10).read()
             lines = lines.decode('GBK') 
@@ -192,7 +192,7 @@ def get_sina_dd(code=None, date=None, vol=400, retry_count=3, pause=0.001):
     for _ in range(retry_count):
         time.sleep(pause)
         try:
-            re = Request(ct.SINA_DD % (ct.P_TYPE['http'], ct.DOMAINS['vsf'], ct.PAGES['sinadd'],
+            re = Request(ct.SINA_DD % (ct.P_TYPE['https'], ct.DOMAINS['vsf'], ct.PAGES['sinadd'],
                                 symbol, vol, date))
             lines = urlopen(re, timeout=10).read()
             lines = lines.decode('GBK') 
@@ -232,7 +232,7 @@ def get_today_ticks(code=None, retry_count=3, pause=0.001):
     for _ in range(retry_count):
         time.sleep(pause)
         try:
-            request = Request(ct.TODAY_TICKS_PAGE_URL % (ct.P_TYPE['http'], ct.DOMAINS['vsf'],
+            request = Request(ct.TODAY_TICKS_PAGE_URL % (ct.P_TYPE['https'], ct.DOMAINS['vsf'],
                                                        ct.PAGES['jv'], date,
                                                        symbol))
             data_str = urlopen(request, timeout=10).read()
@@ -260,7 +260,7 @@ def _today_ticks(symbol, tdate, pageNo, retry_count, pause):
     for _ in range(retry_count):
         time.sleep(pause)
         try:
-            html = lxml.html.parse(ct.TODAY_TICKS_URL % (ct.P_TYPE['http'],
+            html = lxml.html.parse(ct.TODAY_TICKS_URL % (ct.P_TYPE['https'],
                                                          ct.DOMAINS['vsf'], ct.PAGES['t_ticks'],
                                                          symbol, tdate, pageNo
                                 ))  
@@ -344,7 +344,7 @@ def get_realtime_quotes(symbols=None):
         symbols_list = _code_to_symbol(symbols)
         
     symbols_list = symbols_list[:-1] if len(symbols_list) > 8 else symbols_list 
-    request = Request(ct.LIVE_DATA_URL%(ct.P_TYPE['http'], ct.DOMAINS['sinahq'],
+    request = Request(ct.LIVE_DATA_URL%(ct.P_TYPE['https'], ct.DOMAINS['sinahq'],
                                                 _random(), symbols_list))
     text = urlopen(request,timeout=10).read()
     text = text.decode('GBK')
@@ -486,7 +486,7 @@ def get_h_data(code, start=None, end=None, autype='qfq',
 
 def _parase_fq_factor(code, start, end):
     symbol = _code_to_symbol(code)
-    request = Request(ct.HIST_FQ_FACTOR_URL%(ct.P_TYPE['http'],
+    request = Request(ct.HIST_FQ_FACTOR_URL%(ct.P_TYPE['https'],
                                              ct.DOMAINS['vsf'], symbol))
     text = urlopen(request, timeout=10).read()
     text = text[1:len(text)-1]
@@ -567,7 +567,7 @@ def get_index():
           volume:成交量(手)
           amount:成交金额（亿元）
     """
-    request = Request(ct.INDEX_HQ_URL%(ct.P_TYPE['http'],
+    request = Request(ct.INDEX_HQ_URL%(ct.P_TYPE['https'],
                                              ct.DOMAINS['sinahq']))
     text = urlopen(request, timeout=10).read()
     text = text.decode('GBK')
@@ -588,10 +588,10 @@ def get_index():
 
 def _get_index_url(index, code, qt):
     if index:
-        url = ct.HIST_INDEX_URL%(ct.P_TYPE['http'], ct.DOMAINS['vsf'],
+        url = ct.HIST_INDEX_URL%(ct.P_TYPE['https'], ct.DOMAINS['vsf'],
                               code, qt[0], qt[1])
     else:
-        url = ct.HIST_FQ_URL%(ct.P_TYPE['http'], ct.DOMAINS['vsf'],
+        url = ct.HIST_FQ_URL%(ct.P_TYPE['https'], ct.DOMAINS['vsf'],
                               code, qt[0], qt[1])
     return url
 
