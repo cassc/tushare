@@ -81,7 +81,7 @@ def trade_cal():
             交易日历
     isOpen=1是交易日，isOpen=0为休市
     '''
-    all_cal_cache = '{}.csv'.format(pd.datetime.strftime(datetime.date.today(), '%Y-%m-%d'))
+    all_cal_cache = 'all_cal_{}.csv'.format(pd.datetime.strftime(datetime.date.today(), '%Y-%m-%d'))
     if os.path.exists(all_cal_cache):
         df = pd.read_csv(all_cal_cache)
     else:
