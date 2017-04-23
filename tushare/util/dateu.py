@@ -83,7 +83,7 @@ def trade_cal():
     '''
     all_cal_cache = '{}.csv'.format(pd.datetime.strftime(datetime.date.today(), '%Y-%m-%d'))
     if os.path.exists(all_cal_cache):
-        df = pd.read_csv(ct.ALL_CAL_FILE)
+        df = pd.read_csv(all_cal_cache)
     else:
         df = pd.read_csv(ct.ALL_CAL_FILE)
         df.to_csv(all_cal_cache)
