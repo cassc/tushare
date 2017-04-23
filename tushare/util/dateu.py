@@ -4,6 +4,7 @@ import datetime
 import time
 import pandas as pd
 from tushare.stock import cons as ct
+import os
 
 def year_qua(date):
     mon = date[5:7]
@@ -80,7 +81,12 @@ def trade_cal():
             交易日历
     isOpen=1是交易日，isOpen=0为休市
     '''
-    df = pd.read_csv(ct.ALL_CAL_FILE)
+    all_cal_cache = '{}.csv'.format(pd.datetime.strftime(datetime.date.today(), '%Y-%m-%d'))
+    if os.path.exists(all_cal_cache):
+        df = pd.read_csv(ct.ALL_CAL_FILE)
+    else:
+        df = pd.read_csv(ct.ALL_CAL_FILE)
+        df.to_csv(all_cal_cache)
     return df
 
 
