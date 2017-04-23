@@ -676,7 +676,8 @@ def get_k_data(code=None, start='', end='',
                            ignore_index=True)
     if ktype not in ct.K_MIN_LABELS:
         if ((start is not None) & (start != '')) & ((end is not None) & (end != '')):
-            data = data[(data.date >= start) & (data.date <= end)]
+            if data.empty==False:       
+                data = data[(data.date >= start) & (data.date <= end)]
     return data
     raise IOError(ct.NETWORK_URL_ERROR_MSG)
     
@@ -704,6 +705,8 @@ def _get_k_data(url, dataflag='',
                 lines = re.subn(reg, '', lines) 
                 js = json.loads(lines[0])
                 dataflag = dataflag if dataflag in list(js['data'][symbol].keys()) else ct.TT_K_TYPE[ktype.upper()]
+                if len(js['data'][symbol][dataflag]) == 0:
+                    return None
                 if len(js['data'][symbol][dataflag][0]) == 6:
                     df = pd.DataFrame(js['data'][symbol][dataflag], 
                                   columns = ct.KLINE_TT_COLS_MINS)
