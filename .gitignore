@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-zw_k10/tmp/
+flycheck_*.py
 __pycache__/
 *.py[cod]
 *$py.class
