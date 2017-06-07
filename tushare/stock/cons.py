@@ -38,7 +38,8 @@ PAGES = {'fd': 'index.phtml', 'dl': 'downxls.php', 'jv': 'json_v2.php',
          'zz500wt':'000905closeweight.xls',
          't_ticks':'vMS_tradedetail.php', 'dw': 'downLoad.html',
          'qmd':'queryMargin.do', 'szsefc':'ShowReport.szse',
-         'ssecq':'commonQuery.do', 'sinadd':'cn_bill_download.php', 'ids_sw':'SwHy.php'}
+         'ssecq':'commonQuery.do', 'sinadd':'cn_bill_download.php', 'ids_sw':'SwHy.php',
+         'idx': 'index.php'}
 TICK_COLUMNS = ['time', 'price', 'change', 'volume', 'amount', 'type']
 TODAY_TICK_COLUMNS = ['time', 'price', 'pchange', 'change', 'volume', 'amount', 'type']
 DAY_TRADING_COLUMNS = ['code', 'symbol', 'name', 'changepercent',
@@ -70,6 +71,8 @@ THE_FIELDS = ['code','symbol','name','changepercent','trade','open','high','low'
 KLINE_TT_COLS_MINS = ['date', 'open', 'close', 'high', 'low', 'volume']
 KLINE_TT_COLS = ['date', 'open', 'close', 'high', 'low', 'volume', 'amount', 'turnoverratio']
 TICK_PRICE_URL = '%smarket.%s/%s?date=%s&symbol=%s'
+TICK_PRICE_URL_TT = '%sstock.%s/data/%s?appn=detail&action=download&c=%s&d=%s'
+TICK_PRICE_URL_NT = '%squotes.%s/cjmx/%s/%s/%s.xls'
 TODAY_TICKS_PAGE_URL = '%s%s/quotes_service/api/%s/CN_Transactions.getAllPageTime?date=%s&symbol=%s'
 TODAY_TICKS_URL = '%s%s/quotes_service/view/%s?symbol=%s&date=%s&page=%s'
 KLINE_TT_URL = '%sweb.ifzq.%s/appstock/app/%skline/get?_var=kline_day%s&param=%s,%s,%s,%s,640,%s&r=0.%s'
@@ -77,8 +80,7 @@ KLINE_TT_MIN_URL = '%sifzq.%s/appstock/app/kline/mkline?param=%s,m%s,,640&_var=m
 DAY_PRICE_URL = '%sapi.finance.%s/%s/?code=%s&type=last'
 LIVE_DATA_URL = '%shq.%s/rn=%s&list=%s'
 DAY_PRICE_MIN_URL = '%sapi.finance.%s/akmin?scode=%s&type=%s'
-# SINA_DAY_PRICE_URL = '%s%s/quotes_service/api/%s/Market_Center.getHQNodeData?num=80&sort=code&asc=0&node=hs_a&symbol=&_s_r_a=page&page=%s'
-SINA_DAY_PRICE_URL = '%s%s/quotes_service/api/%s/Market_Center.getHQNodeData?num=10000&node=hs_a'
+SINA_DAY_PRICE_URL = '%s%s/quotes_service/api/%s/Market_Center.getHQNodeData?num=10000&node=%s'
 REPORT_URL = '%s%s/q/go.php/vFinanceAnalyze/kind/mainindex/%s?s_i=&s_a=&s_c=&reportdate=%s&quarter=%s&p=%s&num=%s'
 FORECAST_URL = '%s%s/q/go.php/vFinanceAnalyze/kind/performance/%s?s_i=&s_a=&s_c=&s_type=&reportdate=%s&quarter=%s&p=%s&num=%s'
 PROFIT_URL = '%s%s/q/go.php/vFinanceAnalyze/kind/profit/%s?s_i=&s_a=&s_c=&reportdate=%s&quarter=%s&p=%s&num=%s'
@@ -139,6 +141,8 @@ LHB_MSG = '周期输入有误，请输入数字5、10、30或60'
 TOKEN_F_P = 'tk.csv'
 TOKEN_ERR_MSG = '请设置通联数据接口的token凭证码'
 BOX_INPUT_ERR_MSG = '请输入YYYY-MM格式的年月数据'
+TICK_SRCS = ['sn', 'tt', 'nt']
+TICK_SRC_ERROR = '数据源代码只能输入sn,tt,nt其中之一'
 INDEX_SYMBOL = {"399990": "sz399990", "000006": "sh000006", "399998": "sz399998", 
                 "399436": "sz399436", "399678": "sz399678", "399804": "sz399804", 
                 "000104": "sh000104", "000070": "sh000070", "399613": "sz399613", 
@@ -249,6 +253,7 @@ INDEX_SYMBOL = {"399990": "sz399990", "000006": "sh000006", "399998": "sz399998"
                 "399353": "sz399353", "399957": "sz399957", "399412": "sz399412", "000904": "sh000904", "399904": "sz399904", "399410": "sz399410", "000027": "sh000027", "399667": "sz399667", "000857": "sh000857", 
                 "000131": "sh000131", "000964": "sh000964", "399339": "sz399339", "399964": "sz399964", "399991": "sz399991", "399417": "sz399417", "000146": "sh000146", "399551": "sz399551", "000137": "sh000137", "000118": "sh000118", "399976": "sz399976", "000109": "sh000109", "399681": "sz399681", "399438": "sz399438", "000117": "sh000117", "399614": "sz399614", "399669": "sz399669", "000111": "sh000111", "399670": "sz399670", "000097": "sh000097", "000106": "sh000106", "000039": "sh000039", "399935": "sz399935", "000935": "sh000935", "399813": "sz399813", "000037": "sh000037", "399811": "sz399811", "399705": "sz399705", "399556": "sz399556", "000113": "sh000113", "000072": "sh000072", "399651": "sz399651", "399617": "sz399617", "399684": "sz399684", "000041": "sh000041", "399807": "sz399807", "399959": "sz399959", "399967": "sz399967", "399326": "sz399326", "399688": "sz399688", "399368": "sz399368", "399241": "sz399241", "399696": "sz399696", "000850": "sh000850", "000110": "sh000110", "399621": "sz399621", "399243": "sz399243", 
                 "399973": "sz399973", "399987": "sz399987", "000112": "sh000112", "399997": "sz399997", 
+                "000915": "sh000915", "000916": "sh000916",
                 "hkHSI":"hkHSI"}
 import sys
 PY3 = (sys.version_info[0] >= 3)
@@ -294,3 +299,15 @@ def _code_to_symbol(code):
             return ''
         else:
             return 'sh%s'%code if code[:1] in ['5', '6', '9'] else 'sz%s'%code
+        
+def _code_to_symbol_dgt(code):
+    """
+        生成symbol代码标志
+    """
+    if code in INDEX_LABELS:
+        return INDEX_LIST[code]
+    else:
+        if len(code) != 6 :
+            return ''
+        else:
+            return '0%s'%code if code[:1] in ['5', '6', '9'] else '1%s'%code
