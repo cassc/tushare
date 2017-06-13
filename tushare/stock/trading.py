@@ -107,7 +107,7 @@ def _parsing_dayprice_json(types=None, page=1):
         DataFrame 当日所有股票交易数据(DataFrame)
     """
     ct._write_console()
-    request = Request(ct.SINA_DAY_PRICE_URL%(ct.P_TYPE['https'], ct.DOMAINS['vsf'],
+    request = Request(ct.SINA_DAY_PRICE_URL%(ct.P_TYPE['http'], ct.DOMAINS['vsf'],
                                  ct.PAGES['jv'], types, page))
     text = urlopen(request, timeout=10).read()
     if text == 'null':
@@ -250,7 +250,7 @@ def get_today_ticks(code=None, retry_count=3, pause=0.001):
     for _ in range(retry_count):
         time.sleep(pause)
         try:
-            request = Request(ct.TODAY_TICKS_PAGE_URL % (ct.P_TYPE['https'], ct.DOMAINS['vsf'],
+            request = Request(ct.TODAY_TICKS_PAGE_URL % (ct.P_TYPE['http'], ct.DOMAINS['vsf'],
                                                        ct.PAGES['jv'], date,
                                                        symbol))
             data_str = urlopen(request, timeout=10).read()
@@ -278,7 +278,7 @@ def _today_ticks(symbol, tdate, pageNo, retry_count, pause):
     for _ in range(retry_count):
         time.sleep(pause)
         try:
-            html = lxml.html.parse(ct.TODAY_TICKS_URL % (ct.P_TYPE['https'],
+            html = lxml.html.parse(ct.TODAY_TICKS_URL % (ct.P_TYPE['http'],
                                                          ct.DOMAINS['vsf'], ct.PAGES['t_ticks'],
                                                          symbol, tdate, pageNo
                                 ))  
