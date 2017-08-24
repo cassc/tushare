@@ -87,7 +87,7 @@ from tushare.datayes.api import *
 from tushare.internet.boxoffice import (realtime_boxoffice, day_boxoffice,
                                         day_cinema, month_boxoffice)
 
-from tushare.internet.indexes import (bdi)
+# from tushare.internet.indexes import (bdi)
 
 """
 for fund data
