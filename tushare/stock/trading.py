@@ -311,7 +311,7 @@ def get_today_all():
     ct._write_head()
     df = _parsing_dayprice_json('hs_a', 1)
     if df is not None:
-        for i in range(2, ct.PAGE_NUM[0]):
+        for i in range(2, ct.PAGE_NUM[1]):
             newdf = _parsing_dayprice_json('hs_a', i)
             df = df.append(newdf, ignore_index=True)
     df = df.append(_parsing_dayprice_json('shfxjs', 1),
@@ -439,19 +439,19 @@ def get_h_data(code, start=None, end=None, autype='qfq',
             if df is None:  # 可能df为空，退出循环
                 break
             else:
-                data = data.append(df, ignore_index=True)
-    if len(data) == 0 or len(data[(data.date>=start)&(data.date<=end)]) == 0:
-        return None
+                data = data.append(df, ignore_index = True)
+    if len(data) == 0 or len(data[(data.date >= start) & (data.date <= end)]) == 0:
+        return pd.DataFrame()
     data = data.drop_duplicates('date')
     if index:
-        data = data[(data.date>=start) & (data.date<=end)]
+        data = data[(data.date >= start) & (data.date <= end)]
         data = data.set_index('date')
-        data = data.sort_index(ascending=False)
+        data = data.sort_index(ascending = False)
         return data
     if autype == 'hfq':
         if drop_factor:
             data = data.drop('factor', axis=1)
-        data = data[(data.date>=start) & (data.date<=end)]
+        data = data[(data.date >= start) & (data.date <= end)]
         for label in ['open', 'high', 'close', 'low']:
             data[label] = data[label].map(ct.FORMAT)
             data[label] = data[label].astype(float)
@@ -461,15 +461,15 @@ def get_h_data(code, start=None, end=None, autype='qfq',
     else:
         if autype == 'qfq':
             if drop_factor:
-                data = data.drop('factor', axis=1)
+                data = data.drop('factor', axis = 1)
             df = _parase_fq_factor(code, start, end)
             df = df.drop_duplicates('date')
-            df = df.sort_values('date', ascending=False)
+            df = df.sort_values('date', ascending = False)
             firstDate = data.head(1)['date']
             frow = df[df.date == firstDate[0]]
             rt = get_realtime_quotes(code)
             if rt is None:
-                return None
+                return pd.DataFrame()
             if ((float(rt['high']) == 0) & (float(rt['low']) == 0)):
                 preClose = float(rt['pre_close'])
             else:
@@ -495,7 +495,7 @@ def get_h_data(code, start=None, end=None, autype='qfq',
                 data[label] = data[label] / data['factor']
             if drop_factor:
                 data = data.drop('factor', axis=1)
-            data = data[(data.date>=start) & (data.date<=end)]
+            data = data[(data.date >= start) & (data.date <= end)]
             for label in ['open', 'high', 'close', 'low']:
                 data[label] = data[label].map(ct.FORMAT)
             data = data.set_index('date')
@@ -759,6 +759,38 @@ def get_hists(symbols, start=None, end=None,
         return df
     else:
         return None
+  
+  
+def get_day_all(date=None):
+    """
+    获取每日收盘行情
+    Parameters:
+    -------------
+    date:交易日期，格式:YYYY-MM-DD
+    
+    Return:
+    -------------
+    DataFrame
+    code 代码, name 名称, p_change 涨幅%,
+    price 现价, change 涨跌, open 今开, high 最高,
+    low 最低, preprice 昨收, pe 市盈(动),
+    volratio 量比, turnover 换手%, range 振幅%%,
+    volume 总量, selling 内盘, buying 外盘,
+    amount 总金额, totals 总股本(万), industry 细分行业,
+    area 地区, floats 流通股本(万), fvalues 流通市值,
+    abvalues AB股总市值, avgprice 均价, strength 强弱度%,
+    activity 活跃度, avgturnover 笔换手, attack 攻击波%,
+    interval3 近3月涨幅 ，interval 近6月涨幅
+    """
+    wdate = du.last_tddate() if date is None else date
+    wdate = wdate.replace('-', '')
+    if wdate < '20170614':
+        return None
+    datepre = '' if date is None else wdate[0:4] + wdate[4:6] + '/'
+    df = pd.read_csv(ct.ALL_DAY_FILE%(datepre, \
+                                      'hq' if date is None else wdate), \
+                                      dtype={'code':'object'})
+    return df
     
     
 def _random(n=13):
